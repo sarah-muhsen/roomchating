@@ -47,8 +47,11 @@ export const Authentication = () => {
       return next (new Error("in-valid credentails"),{cause:400})
        
       }
+console.log(user);
 
     req.user = user;
+    console.log(req.user);
+    
     next();
  
 })

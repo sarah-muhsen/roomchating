@@ -11,9 +11,7 @@ export const login = asynchandler(async (req, res, next) => {
   if (!user) {
     return next(new Error("there is no user here"),{cause:401})
   }
-  if(!user.confirmemail){
-    return next(new Error("please confirm your email first"),{cause:404})
-  }
+ 
 if(!comparehash({plaintext:password,hashvalue:user.password})){
   return next(new Error("Invalid login credentials"),{cause:401})
 }
@@ -23,19 +21,14 @@ if (user.role === userroles.user) {
 } else {
   signature = process.env.TOKEN_SIGN_ADMIN;
 }
-
 console.log("Using signature:", signature); 
 
-
 const token = generatetoken({
-  payload: { id: user._id, islogged: true, username: user.username },
+  payload: { id: user._id,role:user.role, username: user.username },
   signature: signature,
 });
-if (user.isdeleted) {
-  return res.status(403).json({ message: 'Account is frozen. Contact support.' });
-}
 
-return successresponse({res,message:"done",data:{token}})
+return successresponse({res,message:"done",data:{token,user}})
 })
 
 

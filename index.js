@@ -3,14 +3,15 @@ import bootstrap from "./src/app.controller.js"
  import * as dotenv from "dotenv"
  import path from "node:path"
 
-
-
-dotenv.config({path:path.join("./src/config/.env.prod")})
+import { runIO } from "./src/modules/socket/socket.controller.js"
+dotenv.config({path:path.join("./src/config/.env.dev")})
 const app=express()
 if (!process.env.PORT) {
     throw new Error("Environment variable PORT is not defined.");
 }
-
-const port=process.env.PORT ||8000
 bootstrap(app,express)
-app.listen(port,()=>{console.log(`the server is running in ${port}`);})
+const port=process.env.PORT ||3000
+const httpserver=app.listen(port,()=>{console.log(`the server is running in ${port}`);})
+
+runIO(httpserver)
+

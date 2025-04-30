@@ -1,12 +1,12 @@
 import mongoose, { model, Schema } from "mongoose";
-import { userroles } from "../../middleware/auth.middleware.js";
+export const accessroles={
+    admin:"admin",
+    user:"user"
+}
 const userschema=new Schema({
 username:{
     type:String,
-    minlength:3,
-    maxlength:30,
-    trim:true,
-    required:[true,"username is required"]
+   required:true
 },
 email:{
     type:String,
@@ -15,34 +15,13 @@ email:{
 },
 password:{
     type:String,
-
     required:true
-}
-,
-gender:{
-    type:String,
-   enum:["male","female"],
-   default:'male'
-},
-DOB:Date,
-address:String,
-phone:String,
-image:String,
-confirmemail:{
-    type:Boolean,
-    default:false,
 },
 role:{
-type:String,
-default:userroles.admin,
-enum:Object.values(userroles)
-},
-changepasswordtime:Date,
-isdeleted:{
-    type:Boolean,
-    default:false
+    type:String,
+    required:true,
+    enum: ['user', 'admin'],
 }
-
-},{timestamps:true})
+})
 const usermodel=mongoose.models.user||model("user",userschema)
 export default usermodel
